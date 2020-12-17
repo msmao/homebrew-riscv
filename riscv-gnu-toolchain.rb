@@ -25,11 +25,15 @@ class RiscvGnuToolchain < Formula
     ENV.delete 'CPATH'
 
     args = [
-      "--prefix=#{prefix}"
+      "--prefix=#{prefix}",
+      "--with-arch=#{with-arch}",
+      "--with-abi=#{with-abi}"
     ]
+    args << "--enable-linux" if build.with?("linux")
     args << "--enable-multilib" if build.with?("multilib")
 
     system "./configure", *args
+    opoo "./configure #{args}"
     system "make"
 
     # don't install Python bindings if system already has them
